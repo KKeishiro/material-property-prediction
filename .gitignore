@@ -1,0 +1,6 @@
+data/
+presentation/
+script/atomic_rep_to_descriptors.py
+script/change_columns_name.py
+script/main_data_processing.py
+test.py
