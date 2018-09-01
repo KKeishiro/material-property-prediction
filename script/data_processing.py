@@ -158,7 +158,7 @@ def calculate_descriptors(atomic_df, POSCAR_path, tol=1e-4, cutoff=10,
         descriptors = []
         for i in range(1, max_matrix_power+1):
             if quantize_type_for_structure == "mean":
-                descriptor = np.mean(np.diag(np.linalg.matrix_power(multiplied_matrix, i)))
+                descriptor = np.mean(np.linalg.matrix_power(multiplied_matrix, i))
             if quantize_type_for_structure == "trace":
                 descriptor = np.trace(np.linalg.matrix_power(multiplied_matrix, i))
             if quantize_type_for_structure == "std":

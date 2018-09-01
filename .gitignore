@@ -3,4 +3,5 @@ presentation/
 script/atomic_rep_to_descriptors.py
 script/change_columns_name.py
 script/main_data_processing.py
+script/__pycache__/
 test.py
