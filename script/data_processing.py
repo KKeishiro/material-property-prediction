@@ -3,17 +3,6 @@ import pandas as pd
 from getdata_from_poscar import DataConstruction
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 
-# Setting path------------------------------------------------------------------
-dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-# dir_path = "/Users/user/Documents/M2_research" # my macbook
-
-# cohesive energy
-poscar_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
-compounds_list_dir = dir_path + "/data/to_kanamori/cohesive/compounds_name"
-# ltc
-ltc_dir = dir_path + "/data/to_kanamori/ltc"
-# ------------------------------------------------------------------------------
-
 
 # Get indices from adjacency matrix where a value is nonzero.
 def get_bond_indices(adjacency_matrix):

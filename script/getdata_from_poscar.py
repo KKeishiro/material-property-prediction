@@ -1,3 +1,4 @@
+import os
 import sys
 import numpy as np
 import pandas as pd
@@ -10,19 +11,8 @@ from itertools import chain
 from numpy import inf
 import warnings
 
-
-# Setting path------------------------------------------------------------------
-# dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-dir_path = "/Users/user/Documents/M2_research" # my macbook
-
-# cohesive energy
-poscar_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
-compounds_list_dir = dir_path + "/data/to_kanamori/cohesive/compounds_name"
-# ltc
-ltc_dir = dir_path + "/data/to_kanamori/ltc"
-# ------------------------------------------------------------------------------
-
-atomic_df = pd.read_csv(dir_path + "/data/seko/atomic_data_reduced.csv", index_col=0)
+dir_path = os.getcwd()
+atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
 Cordero_cov_radii = atomic_df['Rcov']
 
 
