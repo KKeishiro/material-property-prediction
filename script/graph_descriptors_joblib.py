@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import argparse
@@ -8,15 +9,16 @@ from datetime import datetime
 
 # Setting path------------------------------------------------------------------
 # dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-dir_path = "/Users/user/Documents/M2_research" # my macbook
+# dir_path = "/Users/user/Documents/M2_research" # my macbook
+dir_path = os.getcwd()
 
-# descriptors_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
-# compounds_list_dir_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
+descriptors_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
+compounds_list_dir_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
 compounds_list_dir_ltc = dir_path + "/data/to_kanamori/ltc/kappa"
 compounds_list_dir_mp = dir_path + "/data/to_kanamori/melting_temp/mp_data"
 # ------------------------------------------------------------------------------
 
-atomic_df = pd.read_csv(dir_path + "/data/seko/atomic_data_reduced.csv", index_col=0)
+atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
 atomic_df = atomic_df.drop(["Rps-d"], axis=1)
 
 parser = argparse.ArgumentParser(description="compute graph-based descriptors")
