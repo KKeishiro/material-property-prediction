@@ -8,14 +8,12 @@ from time import time
 from datetime import datetime
 
 # Setting path------------------------------------------------------------------
-# dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-# dir_path = "/Users/user/Documents/M2_research" # my macbook
 dir_path = os.getcwd()
 
 descriptors_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
-compounds_list_dir_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
-compounds_list_dir_ltc = dir_path + "/data/to_kanamori/ltc/kappa"
-compounds_list_dir_mp = dir_path + "/data/to_kanamori/melting_temp/mp_data"
+compounds_list_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
+compounds_list_ltc = dir_path + "/data/to_kanamori/ltc/kappa"
+compounds_list_mp = dir_path + "/data/to_kanamori/melting_temp/mp_data"
 # ------------------------------------------------------------------------------
 
 atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
@@ -71,16 +69,16 @@ def main(index, property):
 if __name__ == "__main__":
 
     if args.property == "cohesive":
-        compounds_list_dir = compounds_list_dir_cohesive
+        compounds_list_path = compounds_list_cohesive
     elif args.property == "ltc":
-        compounds_list_dir = compounds_list_dir_ltc
+        compounds_list_path = compounds_list_ltc
     elif args.property == "mp":
-        compounds_list_dir = compounds_list_dir_mp
+        compounds_list_path = compounds_list_mp
 
     start = time()
     print('Started at {}'.format(datetime.now()))
 
-    with open(compounds_list_dir) as f:
+    with open(compounds_list_path) as f:
         lines = f.readlines()
         if args.isTest == True:
             n_samples = 10
