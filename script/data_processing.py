@@ -205,8 +205,8 @@ def normalization(X_df, encoded_df, save_path):
         if X_df.index[i] != encoded_df.index[i]:
             raise ValueError("Indices of X_df and encoded_df have to match.")
     X_df_array = X_df.values
-    n_atoms = np.sum(encoded_df.values, axis=1)
-    X_df_norm = (X_df_array.T / n_atoms).T
+    n_atoms = np.sum(encoded_df.values, axis=1, keepdims=True)
+    X_df_norm = X_df_array / n_atoms
     X_df_norm = pd.DataFrame(X_df_norm, index=X_df.index, columns=X_df.columns)
     X_df_norm.to_csv(save_path)
 
