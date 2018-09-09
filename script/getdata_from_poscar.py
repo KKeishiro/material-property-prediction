@@ -137,6 +137,9 @@ class DataConstruction:
                         weight = all_nn_info[center_index][nn_index]["weight"]
                         if len(structure) == 1:
                             adjacency_matrix[0,1] += weight
+                            nn_site = all_nn_info[center_index][nn_index]["site"]
+                            nn_element = nn_site.species_string
+                            distance = np.linalg.norm(center_site.coords - nn_site.coords)
                         else:
                             adjacency_matrix[center_index, nn_site_index] += weight
 
