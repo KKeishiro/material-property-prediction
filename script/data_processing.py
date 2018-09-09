@@ -216,8 +216,8 @@ def composition_encoding(atomic_df, species, compound_name):
     encoded_df = pd.DataFrame(np.array([0]*len(atomic_df.index)).reshape((1,-1)),
                         columns=atomic_df.index)
     for element in species:
-        encoded_df[element] += 1
-    df.index = [compound_name]
+        encoded_df[str(element)] += 1
+    encoded_df.index = [compound_name]
 
     return encoded_df
 
@@ -228,8 +228,8 @@ def compute_ave_descriptors(atomic_df, encoded_df, save_path):
     atomic_df_array = atomic_df.values
     encoded_df_array = encoded_df.values
     sum_rep = np.matmul(encoded_df_array, atomic_df_array)
-    n_atoms = np.sum(encoded_df_array, axis=1)
-    ave_descriptors = (sum_rep.T / n_atoms).T
+    n_atoms = np.sum(encoded_df_array, axis=1, keepdims=True)
+    ave_descriptors = sum_rep / n_atoms
     ave_descriptors = pd.DataFrame(ave_descriptors,
                                 index=encoded_df.index, columns=atomic_df.columns)
     ave_descriptors.to_csv(save_path)

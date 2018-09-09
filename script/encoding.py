@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import argparse
@@ -10,7 +11,7 @@ dir_path = os.getcwd()
 descriptors_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
 compounds_list_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
 compounds_list_ltc = dir_path + "/data/to_kanamori/ltc/kappa"
-compounds_list_mp = dir_path + "/data/to_kanamori/ltc/melting_point"
+compounds_list_mp = dir_path + "/data/to_kanamori/melting_temp/mp_data"
 # ------------------------------------------------------------------------------
 atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
 atomic_df = atomic_df.drop(["Rps-d"], axis=1)
@@ -24,7 +25,7 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
     #set empty DataFrame for encoding
-    encoded = pd.DataFrame(index=[], columns=atomic_data.index)
+    encoded = pd.DataFrame(index=[], columns=atomic_df.index)
 
     if args.property == "cohesive":
         compounds_list_path = compounds_list_cohesive
