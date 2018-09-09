@@ -4,7 +4,7 @@ property=$1
 connectivity=$2
 descriptor_type=$3
 cov_radii_tol=0.65
-save_dir='../data/descriptors/'
+save_dir='data/descriptors/'
 
 if [ $connectivity = 'distance' ]; then
   for i in 'element_wise' 'matmul'; do

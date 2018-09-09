@@ -95,19 +95,21 @@ if __name__ == "__main__":
         print('It took {} sec.'.format(time() - start))
 
         if args.descriptor_type == "mixtured":
-            columns_list = ['Z_diff', 'Period_diff', 'Group_diff', 'm_diff', 'kai(Pauling)_diff',\
-                            'kai(Allen)_diff', 'EA_diff', 'IE1_diff', 'IE2_diff', 'Rps-s_diff', \
-                            'Rps-p_diff', 'Rvdw_diff', 'Rcov_diff', 'MP_diff', 'BP_diff', 'Cp-g_diff',\
-                            'Cp-mol_diff', 'rho_diff', 'E-fusion_diff','E-vapor_diff', 'Thermal-Cond_diff', \
-                            'Ratom_diff', 'Mol-Vol_diff', 'Z_ave', 'Period_ave', 'Group_ave', \
-                            'm_ave', 'kai(Pauling)_ave', 'kai(Allen)_ave', 'EA_ave', 'IE1_ave', \
-                            'IE2_ave', 'Rps-s_ave', 'Rps-p_ave', 'Rvdw_ave', 'Rcov_ave', 'MP_ave', \
-                            'BP_ave', 'Cp-g_ave', 'Cp-mol_ave', 'rho_ave', 'E-fusion_ave', 'E-vapor_ave', \
-                            'Thermal-Cond_ave', 'Ratom_ave', 'Mol-Vol_ave', 'Z_std', 'Period_std', \
-                            'Group_std', 'm_std', 'kai(Pauling)_std', 'kai(Allen)_std', 'EA_std', \
-                            'IE1_std', 'IE2_std', 'Rps-s_std', 'Rps-p_std', 'Rvdw_std', 'Rcov_std', \
-                            'MP_std', 'BP_std', 'Cp-g_std', 'Cp-mol_std', 'rho_std', 'E-fusion_std', \
-                            'E-vapor_std', 'Thermal-Cond_std', 'Ratom_std', 'Mol-Vol_std']
+            columns_list = ['Z_diff', 'Group_diff', 'kai(Pauling)_diff', \
+                            'kai(Allen)_diff', 'EA_diff', 'IE1_diff', 'IE2_diff', \
+                            'Rps-s_diff', 'Rvdw_diff', 'Rcov_diff', 'MP_diff', \
+                            'BP_diff', 'Cp-g_diff','Cp-mol_diff', 'rho_diff', \
+                            'E-fusion_diff', 'Thermal-Cond_diff', 'Mol-Vol_diff', \
+                            'Z_ave', 'Group_ave', 'kai(Pauling)_ave', \
+                            'kai(Allen)_ave', 'EA_ave', 'IE1_ave', 'IE2_ave', \
+                            'Rps-s_ave', 'Rvdw_ave', 'Rcov_ave', 'MP_ave', \
+                            'BP_ave', 'Cp-g_ave', 'Cp-mol_ave', 'rho_ave', \
+                            'E-fusion_ave', 'Thermal-Cond_ave', 'Mol-Vol_ave', \
+                            'Z_std', 'Group_std', 'kai(Pauling)_std', \
+                            'kai(Allen)_std', 'EA_std', 'IE1_std', 'IE2_std', \
+                            'Rps-s_std', 'Rvdw_std', 'Rcov_std', 'MP_std', \
+                            'BP_std', 'Cp-g_std', 'Cp-mol_std', 'rho_std', \
+                            'E-fusion_std', 'Thermal-Cond_std', 'Mol-Vol_std']
         elif args.descriptor_type == "structure":
             columns_list = range(len(descriptors[0]))
 
