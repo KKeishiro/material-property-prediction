@@ -12,7 +12,7 @@ compounds_list_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
 compounds_list_ltc = dir_path + "/data/to_kanamori/ltc/kappa"
 compounds_list_mp = dir_path + "/data/to_kanamori/ltc/melting_point"
 # ------------------------------------------------------------------------------
-atomic_df = pd.read_csv(dir_path + "/data/seko/atomic_data_20160603.csv", index_col=0)
+atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
 atomic_df = atomic_df.drop(["Rps-d"], axis=1)
 
 parser = argparse.ArgumentParser(description="encode compounds w.r.t. composition")

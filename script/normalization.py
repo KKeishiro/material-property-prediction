@@ -4,8 +4,7 @@ import argparse
 from data_processing import normalization
 
 # Setting path------------------------------------------------------------------
-# dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-dir_path = "/Users/user/Documents/M2_research" # my macbook
+dir_path = os.getcwd()
 # ------------------------------------------------------------------------------
 
 # load encoded DataFrame

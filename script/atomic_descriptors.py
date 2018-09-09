@@ -4,12 +4,11 @@ import argparse
 from data_processing import compute_ave_descriptors, compute_std_descriptors
 
 # Setting path------------------------------------------------------------------
-# dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-dir_path = "/Users/user/Documents/M2_research" # my macbook
+dir_path = os.getcwd()
 # ------------------------------------------------------------------------------
 
 # load atomic DataFrame
-atomic_df = pd.read_csv(dir_path + "/data/seko/atomic_data_20160603.csv", index_col=0)
+atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
 atomic_df = atomic_df.drop(["Rps-d"], axis=1)
 
 # load encoded DataFrame
