@@ -31,6 +31,9 @@ if __name__ == "__main__":
         encoded_df = encoded_df_ltc
     elif args.property == "mp":
         encoded_df = encoded_df_mp
+    else:
+        assert False, 'plased choose a valid property name'
+        
     df = pd.read_csv(args.file_path, index_col=0)
     save_path = os.path.splitext(args.file_path)[0] + '_norm.csv'
     normalization(df, encoded_df, save_path)

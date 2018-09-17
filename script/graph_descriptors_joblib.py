@@ -74,6 +74,8 @@ if __name__ == "__main__":
         compounds_list_path = compounds_list_ltc
     elif args.property == "mp":
         compounds_list_path = compounds_list_mp
+    else:
+        assert False, 'plased choose a valid property name'
 
     start = time()
     print('Started at {}'.format(datetime.now()))
