@@ -83,7 +83,7 @@ if __name__ == "__main__":
     with open(compounds_list_path) as f:
         lines = f.readlines()
         if args.isTest == True:
-            n_samples = 10
+            n_samples = 1
         else:
             n_samples = len(lines)
 
