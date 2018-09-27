@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import argparse
@@ -7,16 +8,15 @@ from time import time
 from datetime import datetime
 
 # Setting path------------------------------------------------------------------
-# dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-dir_path = "/Users/user/Documents/M2_research" # my macbook
+dir_path = os.getcwd()
 
-# descriptors_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
-# compounds_list_dir_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
-compounds_list_dir_ltc = dir_path + "/data/to_kanamori/ltc/kappa"
-compounds_list_dir_mp = dir_path + "/data/to_kanamori/melting_temp/mp_data"
+descriptors_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
+compounds_list_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
+compounds_list_ltc = dir_path + "/data/to_kanamori/ltc/kappa"
+compounds_list_mp = dir_path + "/data/to_kanamori/melting_temp/mp_data"
 # ------------------------------------------------------------------------------
 
-atomic_df = pd.read_csv(dir_path + "/data/seko/atomic_data_reduced.csv", index_col=0)
+atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
 atomic_df = atomic_df.drop(["Rps-d"], axis=1)
 
 parser = argparse.ArgumentParser(description="compute graph-based descriptors")
@@ -69,19 +69,21 @@ def main(index, property):
 if __name__ == "__main__":
 
     if args.property == "cohesive":
-        compounds_list_dir = compounds_list_dir_cohesive
+        compounds_list_path = compounds_list_cohesive
     elif args.property == "ltc":
-        compounds_list_dir = compounds_list_dir_ltc
+        compounds_list_path = compounds_list_ltc
     elif args.property == "mp":
-        compounds_list_dir = compounds_list_dir_mp
+        compounds_list_path = compounds_list_mp
+    else:
+        assert False, 'plased choose a valid property name'
 
     start = time()
     print('Started at {}'.format(datetime.now()))
 
-    with open(compounds_list_dir) as f:
+    with open(compounds_list_path) as f:
         lines = f.readlines()
         if args.isTest == True:
-            n_samples = 10
+            n_samples = 1
         else:
             n_samples = len(lines)
 
@@ -95,19 +97,21 @@ if __name__ == "__main__":
         print('It took {} sec.'.format(time() - start))
 
         if args.descriptor_type == "mixtured":
-            columns_list = ['Z_diff', 'Period_diff', 'Group_diff', 'm_diff', 'kai(Pauling)_diff',\
-                            'kai(Allen)_diff', 'EA_diff', 'IE1_diff', 'IE2_diff', 'Rps-s_diff', \
-                            'Rps-p_diff', 'Rvdw_diff', 'Rcov_diff', 'MP_diff', 'BP_diff', 'Cp-g_diff',\
-                            'Cp-mol_diff', 'rho_diff', 'E-fusion_diff','E-vapor_diff', 'Thermal-Cond_diff', \
-                            'Ratom_diff', 'Mol-Vol_diff', 'Z_ave', 'Period_ave', 'Group_ave', \
-                            'm_ave', 'kai(Pauling)_ave', 'kai(Allen)_ave', 'EA_ave', 'IE1_ave', \
-                            'IE2_ave', 'Rps-s_ave', 'Rps-p_ave', 'Rvdw_ave', 'Rcov_ave', 'MP_ave', \
-                            'BP_ave', 'Cp-g_ave', 'Cp-mol_ave', 'rho_ave', 'E-fusion_ave', 'E-vapor_ave', \
-                            'Thermal-Cond_ave', 'Ratom_ave', 'Mol-Vol_ave', 'Z_std', 'Period_std', \
-                            'Group_std', 'm_std', 'kai(Pauling)_std', 'kai(Allen)_std', 'EA_std', \
-                            'IE1_std', 'IE2_std', 'Rps-s_std', 'Rps-p_std', 'Rvdw_std', 'Rcov_std', \
-                            'MP_std', 'BP_std', 'Cp-g_std', 'Cp-mol_std', 'rho_std', 'E-fusion_std', \
-                            'E-vapor_std', 'Thermal-Cond_std', 'Ratom_std', 'Mol-Vol_std']
+            columns_list = ['Z_diff', 'Group_diff', 'kai(Pauling)_diff', \
+                            'kai(Allen)_diff', 'EA_diff', 'IE1_diff', 'IE2_diff', \
+                            'Rps-s_diff', 'Rvdw_diff', 'Rcov_diff', 'MP_diff', \
+                            'BP_diff', 'Cp-g_diff','Cp-mol_diff', 'rho_diff', \
+                            'E-fusion_diff', 'Thermal-Cond_diff', 'Mol-Vol_diff', \
+                            'Z_ave', 'Group_ave', 'kai(Pauling)_ave', \
+                            'kai(Allen)_ave', 'EA_ave', 'IE1_ave', 'IE2_ave', \
+                            'Rps-s_ave', 'Rvdw_ave', 'Rcov_ave', 'MP_ave', \
+                            'BP_ave', 'Cp-g_ave', 'Cp-mol_ave', 'rho_ave', \
+                            'E-fusion_ave', 'Thermal-Cond_ave', 'Mol-Vol_ave', \
+                            'Z_std', 'Group_std', 'kai(Pauling)_std', \
+                            'kai(Allen)_std', 'EA_std', 'IE1_std', 'IE2_std', \
+                            'Rps-s_std', 'Rvdw_std', 'Rcov_std', 'MP_std', \
+                            'BP_std', 'Cp-g_std', 'Cp-mol_std', 'rho_std', \
+                            'E-fusion_std', 'Thermal-Cond_std', 'Mol-Vol_std']
         elif args.descriptor_type == "structure":
             columns_list = range(len(descriptors[0]))
 

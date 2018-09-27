@@ -1,3 +1,4 @@
+import os
 import sys
 import numpy as np
 import pandas as pd
@@ -10,19 +11,8 @@ from itertools import chain
 from numpy import inf
 import warnings
 
-
-# Setting path------------------------------------------------------------------
-# dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-dir_path = "/Users/user/Documents/M2_research" # my macbook
-
-# cohesive energy
-poscar_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
-compounds_list_dir = dir_path + "/data/to_kanamori/cohesive/compounds_name"
-# ltc
-ltc_dir = dir_path + "/data/to_kanamori/ltc"
-# ------------------------------------------------------------------------------
-
-atomic_df = pd.read_csv(dir_path + "/data/seko/atomic_data_reduced.csv", index_col=0)
+dir_path = os.getcwd()
+atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
 Cordero_cov_radii = atomic_df['Rcov']
 
 
@@ -116,10 +106,11 @@ class DataConstruction:
 
         # The following setting is for avoiding the unavailability of
         # adjacency matrix that occurs when an input is a simple substance.
-        if len(structure) == 1:
-            adjacency_matrix = np.zeros((2, 2))
-        else:
-            adjacency_matrix = np.zeros((n_atoms, n_atoms))
+        # if len(structure) == 1:
+        #     adjacency_matrix = np.zeros((2, 2))
+        # else:
+        #     adjacency_matrix = np.zeros((n_atoms, n_atoms))
+        adjacency_matrix = np.zeros((n_atoms, n_atoms))
 
         # compute adjacency matrix
         for center_index in range(n_atoms):
@@ -139,14 +130,19 @@ class DataConstruction:
                                         Cordero_cov_radii[nn_element] +
                                         float(self.cov_radii_tol)):
                             if len(structure) == 1:
-                                adjacency_matrix[0,1] += 1
+                                # adjacency_matrix[0,1] += 1
+                                adjacency_matrix[0,0] += 1
                             else:
                                 adjacency_matrix[center_index, nn_site_index] += 1
 
                     elif self.connectivity == "weight":
                         weight = all_nn_info[center_index][nn_index]["weight"]
                         if len(structure) == 1:
-                            adjacency_matrix[0,1] += weight
+                            # adjacency_matrix[0,1] += weight
+                            adjacency_matrix[0,0] += weight
+                            nn_site = all_nn_info[center_index][nn_index]["site"]
+                            nn_element = nn_site.species_string
+                            distance = np.linalg.norm(center_site.coords - nn_site.coords)
                         else:
                             adjacency_matrix[center_index, nn_site_index] += weight
 
@@ -155,10 +151,12 @@ class DataConstruction:
                             adjacency_matrix[nn_site_index, center_index]
 
         if len(structure) == 1:
-            adjacency_matrix[1,0] = adjacency_matrix[0,1]
-            squared_distance_matrix = np.zeros((2,2))
-            squared_distance_matrix[0,1] = distance ** 2
-            squared_distance_matrix[1,0] = distance ** 2
+            # adjacency_matrix[1,0] = adjacency_matrix[0,1]
+            # squared_distance_matrix = np.zeros((2,2))
+            squared_distance_matrix = np.zeros((1,1))
+            # squared_distance_matrix[0,1] = distance ** 2
+            # squared_distance_matrix[1,0] = distance ** 2
+            squared_distance_matrix[0,0] = distance ** 2
         else:
             squared_distance_matrix = structure.distance_matrix ** 2
 

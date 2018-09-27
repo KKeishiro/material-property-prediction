@@ -4,13 +4,13 @@ property=$1
 connectivity=$2
 descriptor_type=$3
 cov_radii_tol=0.65
-save_dir='../data/seko/'
+save_dir='data/descriptors/'
 
 if [ $connectivity = 'distance' ]; then
   for i in 'element_wise' 'matmul'; do
     if [ $descriptor_type = 'structure' ]; then
       for j in 'mean' 'trace' 'std'; do
-        python graph_descriptors_joblib.py \
+        python script/graph_descriptors_joblib.py \
                 --property $property \
                 --cov_radii_tol $cov_radii_tol \
                 --multiply_type $i \
@@ -22,7 +22,7 @@ if [ $connectivity = 'distance' ]; then
 
     elif [ $descriptor_type = 'mixtured' ]; then
       for j in 'sum' 'mean' 'trace'; do
-        python graph_descriptors_joblib.py \
+        python script/graph_descriptors_joblib.py \
                 --property $property \
                 --cov_radii_tol $cov_radii_tol \
                 --multiply_type $i \
@@ -38,7 +38,7 @@ elif [ $connectivity = 'weight' ]; then
   for i in 'element_wise' 'matmul'; do
     if [ $descriptor_type = 'structure' ]; then
       for j in 'mean' 'trace' 'std'; do
-        python graph_descriptors_joblib.py \
+        python script/graph_descriptors_joblib.py \
                 --property $property \
                 --connectivity $connectivity \
                 --multiply_type $i \
@@ -50,7 +50,7 @@ elif [ $connectivity = 'weight' ]; then
 
     elif [ $descriptor_type = 'mixtured' ]; then
       for j in 'sum' 'mean' 'trace'; do
-        python graph_descriptors_joblib.py \
+        python script/graph_descriptors_joblib.py \
                 --property $property \
                 --connectivity $connectivity \
                 --multiply_type $i \

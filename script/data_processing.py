@@ -3,17 +3,6 @@ import pandas as pd
 from getdata_from_poscar import DataConstruction
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 
-# Setting path------------------------------------------------------------------
-dir_path = "/Users/keishiro/Documents/M2_research" # lab's laptop
-# dir_path = "/Users/user/Documents/M2_research" # my macbook
-
-# cohesive energy
-poscar_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
-compounds_list_dir = dir_path + "/data/to_kanamori/cohesive/compounds_name"
-# ltc
-ltc_dir = dir_path + "/data/to_kanamori/ltc"
-# ------------------------------------------------------------------------------
-
 
 # Get indices from adjacency matrix where a value is nonzero.
 def get_bond_indices(adjacency_matrix):
@@ -216,8 +205,8 @@ def normalization(X_df, encoded_df, save_path):
         if X_df.index[i] != encoded_df.index[i]:
             raise ValueError("Indices of X_df and encoded_df have to match.")
     X_df_array = X_df.values
-    n_atoms = np.sum(encoded_df.values, axis=1)
-    X_df_norm = (X_df_array.T / n_atoms).T
+    n_atoms = np.sum(encoded_df.values, axis=1, keepdims=True)
+    X_df_norm = X_df_array / n_atoms
     X_df_norm = pd.DataFrame(X_df_norm, index=X_df.index, columns=X_df.columns)
     X_df_norm.to_csv(save_path)
 
@@ -227,8 +216,8 @@ def composition_encoding(atomic_df, species, compound_name):
     encoded_df = pd.DataFrame(np.array([0]*len(atomic_df.index)).reshape((1,-1)),
                         columns=atomic_df.index)
     for element in species:
-        encoded_df[element] += 1
-    df.index = [compound_name]
+        encoded_df[str(element)] += 1
+    encoded_df.index = [compound_name]
 
     return encoded_df
 
@@ -239,8 +228,8 @@ def compute_ave_descriptors(atomic_df, encoded_df, save_path):
     atomic_df_array = atomic_df.values
     encoded_df_array = encoded_df.values
     sum_rep = np.matmul(encoded_df_array, atomic_df_array)
-    n_atoms = np.sum(encoded_df_array, axis=1)
-    ave_descriptors = (sum_rep.T / n_atoms).T
+    n_atoms = np.sum(encoded_df_array, axis=1, keepdims=True)
+    ave_descriptors = sum_rep / n_atoms
     ave_descriptors = pd.DataFrame(ave_descriptors,
                                 index=encoded_df.index, columns=atomic_df.columns)
     ave_descriptors.to_csv(save_path)
