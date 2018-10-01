@@ -10,7 +10,6 @@ from datetime import datetime
 dir_path = os.getcwd()
 script_path = os.path.join(dir_path, 'script')
 sys.path.append(script_path)
-print(script_path)
 from atomic_rep_to_descriptors import *
 
 descriptors_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
@@ -42,8 +41,8 @@ def main(index, property, path_lines):
             rep.append(lines[i].strip().split())
 
     # compute descriptors
-    rep = np.array(rep)
-    descriptor = atomic_rep_to_compound_descriptor(rep, mom_order=2, icov=False)
+    rep = np.array(rep).astype(np.float)
+    descriptor = atomic_rep_to_compound_descriptor(rep, mom_order=2, icov=True)
 
     return descriptor, compound_dir
 
@@ -68,7 +67,7 @@ if __name__ == "__main__":
     with open(compounds_list_path) as f:
         lines = f.readlines()
         if args.isTest == True:
-            n_samples = 1
+            n_samples = 10
         else:
             n_samples = len(lines)
 
@@ -80,6 +79,5 @@ if __name__ == "__main__":
         print('It took {} sec.'.format(time() - start))
 
 
-        df_descriptors = pd.DataFrame(np.array(descriptors),
-                                        index=compounds_list)
+        df_descriptors = pd.DataFrame(np.array(descriptors), index=name_list)
         df_descriptors.to_csv(args.save_path)
