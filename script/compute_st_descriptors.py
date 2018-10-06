@@ -55,12 +55,7 @@ def main(index, property, path_lines, icov=True):
             rep = np.concatenate((rep, element_rep), axis=1)
 
     # compute descriptors
-<<<<<<< HEAD
     descriptor = atomic_rep_to_compound_descriptor(rep, mom_order=2, icov=icov)
-=======
-    rep = np.array(rep).astype(np.float)
-    descriptor = atomic_rep_to_compound_descriptor(rep, mom_order=2, icov=True)
->>>>>>> 914dc2731695a852de2a1d0ef2c202c913c6760c
 
     return descriptor, compound_dir
 
