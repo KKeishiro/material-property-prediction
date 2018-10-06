@@ -26,24 +26,37 @@ parser.add_argument("--isTest", action="store_true", help="whether to test or no
 args = parser.parse_args()
 
 
-def main(index, property, path_lines):
+def main(index, property, path_lines, icov=True):
     if property == "cohesive":
         compound_dir = path_lines[index].strip()
-        descriptor_path = descriptors_dir + compound_dir + "/descriptors_st_bop"
+        element_descriptor_path = descriptors_dir + compound_dir + "/descriptors_element"
+        st_descriptor_path = descriptors_dir + compound_dir + "/descriptors_st_cos10"
+
     elif property == "ltc" or property == "mp":
         line = path_lines[index].strip().split()
         compound_dir = line[0]
-        descriptor_path = dir_path + compound_dir + "/descriptors_st_bop"
+        element_descriptor_path = dir_path + compound_dir + "/descriptors_element"
+        st_descriptor_path = dir_path + compound_dir + "/descriptors_st_cos10"
 
+    element_rep = []
     rep = []
-    with open(descriptor_path) as f:
+
+    with open(st_descriptor_path) as f:
         lines = f.readlines()
         for i in range(len(lines)):
             rep.append(lines[i].strip().split())
+        rep = np.array(rep).astype(np.float)
+
+    if icov:
+        with open(element_descriptor_path) as f:
+            lines = f.readlines()
+            for i in range(len(lines)):
+                element_rep.append(lines[i].strip().split())
+            element_rep = np.array(element_rep).astype(np.float)
+            rep = np.concatenate((rep, element_rep), axis=1)
 
     # compute descriptors
-    rep = np.array(rep)
-    descriptor = atomic_rep_to_compound_descriptor(rep, mom_order=2, icov=False)
+    descriptor = atomic_rep_to_compound_descriptor(rep, mom_order=2, icov=icov)
 
     return descriptor, compound_dir
 
@@ -57,7 +70,7 @@ if __name__ == "__main__":
     elif args.property == "mp":
         compounds_list_path = compounds_list_mp
     else:
-        assert False, 'plased choose a valid property name'
+        assert False, 'please choose a valid property name'
 
     start = time()
     print('Started at {}'.format(datetime.now()))
@@ -73,6 +86,8 @@ if __name__ == "__main__":
             n_samples = len(lines)
 
         for i in range(n_samples):
+            if i % 500 == 0:
+                print(i, 'compunds are done!')
             descriptor, compound_name = main(i, args.property, lines)
             descriptors.append(descriptor)
             name_list.append(compound_name)
@@ -80,6 +95,5 @@ if __name__ == "__main__":
         print('It took {} sec.'.format(time() - start))
 
 
-        df_descriptors = pd.DataFrame(np.array(descriptors),
-                                        index=compounds_list)
+        df_descriptors = pd.DataFrame(np.array(descriptors), index=name_list)
         df_descriptors.to_csv(args.save_path)
