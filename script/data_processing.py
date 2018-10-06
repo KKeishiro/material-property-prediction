@@ -13,6 +13,7 @@ def get_bond_indices(adjacency_matrix):
 # Calculate the pair-wise property values between bond pairs.
 def calc_pair_wise_properties(atomic_df, bond_indices, species, calc_type):
     # the shape of pair_mat is n_properties * n_atoms * n_atoms
+    assert (calc_type == 'diff' or 'mean'), 'please choose valid calc_type'
     n_atoms = len(species)
     if n_atoms == 1:
         pair_mat = np.zeros((len(atomic_df.columns), 2, 2))
@@ -40,8 +41,6 @@ def calc_pair_wise_properties(atomic_df, bond_indices, species, calc_type):
                 pair = abs(atom_i - atom_j)
             elif calc_type == 'mean':
                 pair = np.mean(np.concatenate([[atom_i], [atom_j]]), axis=0)
-            else: # std
-                pair = np.std(np.concatenate([[atom_i], [atom_j]]), axis=0)
 
             for column_index in range(len(atomic_df.columns)):
                 pair_mat[column_index, index_i, index_j] = pair[column_index]
@@ -164,21 +163,19 @@ def calculate_descriptors(atomic_df, POSCAR_path, tol=1e-4, cutoff=10,
         M_diff = diff_mat * multiplied_matrix
         mean_mat = calc_pair_wise_properties(atomic_df, bond_indices, species, 'mean')
         M_mean = mean_mat * multiplied_matrix
-        std_mat = calc_pair_wise_properties(atomic_df, bond_indices, species, 'std')
-        M_std = std_mat * multiplied_matrix
 
         if quantize_type_for_mixtured == "sum":
             diff_descriptor = np.sum(M_diff, axis=(1,2))
             ave_descriptor = np.sum(M_mean, axis=(1,2))
-            std_descriptor = np.sum(M_std, axis=(1,2))
         elif quantize_type_for_mixtured == "mean":
             diff_descriptor = np.mean(M_diff, axis=(1,2))
             ave_descriptor = np.mean(M_mean, axis=(1,2))
-            std_descriptor = np.mean(M_std, axis=(1,2))
+        elif quantize_type_for_mixtured == 'std':
+            diff_descriptor = np.std(M_diff, axis=(1,2))
+            ave_descriptor = np.std(M_mean, axis=(1,2))
         elif quantize_type_for_mixtured == "trace":
-            diff_descriptor = np.trace(np.matmul(M_diff,M_diff), axis1=1, axis2=2)
-            ave_descriptor = np.trace(np.matmul(M_mean,M_mean), axis1=1, axis2=2)
-            std_descriptor = np.trace(np.matmul(M_std,M_std), axis1=1, axis2=2)
+            diff_descriptor = np.trace(M_diff, axis1=1, axis2=2)
+            ave_descriptor = np.trace(M_mean, axis1=1, axis2=2)
 
         a = np.append(diff_descriptor, ave_descriptor)
         b = np.append(a, std_descriptor)
