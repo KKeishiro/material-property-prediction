@@ -88,7 +88,7 @@ if __name__ == "__main__":
             n_samples = len(lines)
 
         results = Parallel(n_jobs=-1, verbose=2)(
-                            delayed(main)(index, args.property) for index in range(n_samples))
+              delayed(main)(index, args.property) for index in range(n_samples))
         results = np.array(results)
         descriptors = results[:,0]
         descriptors = [descriptor for descriptor in descriptors]
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                             'Rps-s_ave', 'Rvdw_ave', 'Rcov_ave', 'MP_ave', \
                             'BP_ave', 'Cp-g_ave', 'Cp-mol_ave', 'rho_ave', \
                             'E-fusion_ave', 'Thermal-Cond_ave', 'Mol-Vol_ave']
-                            
+
         elif args.descriptor_type == "structure":
             columns_list = range(len(descriptors[0]))
 
