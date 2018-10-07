@@ -22,10 +22,10 @@ atomic_df = atomic_df.drop(["Rps-d"], axis=1)
 parser = argparse.ArgumentParser(description="compute graph-based descriptors")
 parser.add_argument("--property", required=True, help="property of a dataset")
 parser.add_argument("--tol", default=1e-4, help="tolerance parameter")
-parser.add_argument("--cutoff", default=10, help="cutoff value")
+parser.add_argument("--cutoff", default=10, type=float, help="cutoff value")
 parser.add_argument("--cov_radii_tol", default=0.65,
                     help="Cordero covalent radii tolerance")
-parser.add_argument("--connectivity", default="distance",
+parser.add_argument("--connectivity", default="weight",
                     help="definition of connectivity")
 parser.add_argument("--multiply_type", default="element_wise", help="multipication type")
 parser.add_argument("--periodic", action="store_true",
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     elif args.property == "mp":
         compounds_list_path = compounds_list_mp
     else:
-        assert False, 'plased choose a valid property name'
+        assert False, 'please choose a valid property name'
 
     start = time()
     print('Started at {}'.format(datetime.now()))
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     with open(compounds_list_path) as f:
         lines = f.readlines()
         if args.isTest == True:
-            n_samples = 1
+            n_samples = 10
         else:
             n_samples = len(lines)
 
@@ -106,12 +106,8 @@ if __name__ == "__main__":
                             'kai(Allen)_ave', 'EA_ave', 'IE1_ave', 'IE2_ave', \
                             'Rps-s_ave', 'Rvdw_ave', 'Rcov_ave', 'MP_ave', \
                             'BP_ave', 'Cp-g_ave', 'Cp-mol_ave', 'rho_ave', \
-                            'E-fusion_ave', 'Thermal-Cond_ave', 'Mol-Vol_ave', \
-                            'Z_std', 'Group_std', 'kai(Pauling)_std', \
-                            'kai(Allen)_std', 'EA_std', 'IE1_std', 'IE2_std', \
-                            'Rps-s_std', 'Rvdw_std', 'Rcov_std', 'MP_std', \
-                            'BP_std', 'Cp-g_std', 'Cp-mol_std', 'rho_std', \
-                            'E-fusion_std', 'Thermal-Cond_std', 'Mol-Vol_std']
+                            'E-fusion_ave', 'Thermal-Cond_ave', 'Mol-Vol_ave']
+                            
         elif args.descriptor_type == "structure":
             columns_list = range(len(descriptors[0]))
 
