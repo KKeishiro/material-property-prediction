@@ -119,9 +119,7 @@ def calculate_descriptors(atomic_df, POSCAR_path, tol=1e-4, cutoff=10,
 
     quantize_type_for_mixtured (str):
             This defines how to convert matrix to scaler for mixtured descriptors.
-            You can choose "sum" or "trace".
-            If "sum", all elements in a final matrix are summed up.
-            If "trace", trace of a final matrix is used.
+            You can choose "sum", "mean", "std" and "trace".
             If descriptor_type is "structure", this param is ignored.
             (default: "sum")
     '''
@@ -174,13 +172,12 @@ def calculate_descriptors(atomic_df, POSCAR_path, tol=1e-4, cutoff=10,
             diff_descriptor = np.std(M_diff, axis=(1,2))
             ave_descriptor = np.std(M_mean, axis=(1,2))
         elif quantize_type_for_mixtured == "trace":
-            diff_descriptor = np.trace(M_diff, axis1=1, axis2=2)
-            ave_descriptor = np.trace(M_mean, axis1=1, axis2=2)
+            diff_descriptor = np.trace(np.matmul(M_diff, M_diff), axis1=1, axis2=2)
+            ave_descriptor = np.trace(np.matmul(M_mean, M_mean), axis1=1, axis2=2)
 
         a = np.append(diff_descriptor, ave_descriptor)
-        b = np.append(a, std_descriptor)
         # return b
-        return b.tolist()
+        return a.tolist()
 
 
 # Normalization by the number of atoms in a unitcell.
