@@ -10,6 +10,7 @@ from scipy.spatial import Voronoi
 from itertools import chain
 from numpy import inf
 import warnings
+warnings.filterwarnings("ignore") # ignore RuntimeWarning (division by zero)
 
 dir_path = os.getcwd()
 atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
@@ -18,7 +19,7 @@ Cordero_cov_radii = atomic_df['Rcov']
 
 class DataConstruction:
 
-    def __init__(self, tol=1e-4, cutoff=10.0, cov_radii_tol=0.65,
+    def __init__(self, tol=0, cutoff=10.0, cov_radii_tol=0.65,
                 multiplication_type="element_wise", connectivity="distance"):
         '''
         tol (float):
@@ -160,7 +161,6 @@ class DataConstruction:
         else:
             squared_distance_matrix = structure.distance_matrix ** 2
 
-        warnings.filterwarnings("ignore") # ignore RuntimeWarning (division by zero)
         reciprocal_squared_distance_matrix = squared_distance_matrix ** -1
         reciprocal_squared_distance_matrix[reciprocal_squared_distance_matrix == inf]=0
 
@@ -200,7 +200,8 @@ class DataConstruction:
 
         warnings.filterwarnings("ignore") # ignore RuntimeWarning (division by zero)
         reciprocal_squared_distance_matrix = squared_distance_matrix ** -1
-        reciprocal_squared_distance_matrix[reciprocal_squared_distance_matrix == inf] = 0
+        reciprocal_squared_distance_matrix[
+                            reciprocal_squared_distance_matrix == np.inf] = 0
 
         return (adjacency_matrix, reciprocal_squared_distance_matrix)
 
