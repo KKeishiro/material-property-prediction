@@ -94,7 +94,7 @@ if __name__ == "__main__":
               delayed(main)(index, args.property) for index in range(n_samples))
         results = np.array(results)
         descriptors = results[:,0]
-        # descriptors = [descriptor for descriptor in descriptors]
+        descriptors = [descriptor for descriptor in descriptors]
         compounds_list = results[:,1]
 
         print('It took {} sec.'.format(time() - start))
