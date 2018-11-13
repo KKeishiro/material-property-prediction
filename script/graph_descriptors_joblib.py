@@ -10,10 +10,13 @@ from datetime import datetime
 # Setting path------------------------------------------------------------------
 dir_path = os.getcwd()
 
-descriptors_dir = dir_path + "/data/to_kanamori/cohesive/descriptors/"
-compounds_list_cohesive = dir_path + "/data/to_kanamori/cohesive/compounds_name"
-compounds_list_ltc = dir_path + "/data/to_kanamori/ltc/kappa"
-compounds_list_mp = dir_path + "/data/to_kanamori/melting_temp/mp_data"
+descriptors_dir = os.path.join(dir_path,
+                            "data/to_kanamori/cohesive/descriptors")
+compounds_list_cohesive = os.path.join(dir_path,
+                            "data/to_kanamori/cohesive/compounds_name")
+compounds_list_ltc = os.path.join(dir_path, "data/to_kanamori/ltc/kappa")
+compounds_list_mp = os.path.join(dir_path,
+                            "data/to_kanamori/melting_temp/mp_data")
 # ------------------------------------------------------------------------------
 
 atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
@@ -91,7 +94,7 @@ if __name__ == "__main__":
               delayed(main)(index, args.property) for index in range(n_samples))
         results = np.array(results)
         descriptors = results[:,0]
-        descriptors = [descriptor for descriptor in descriptors]
+        # descriptors = [descriptor for descriptor in descriptors]
         compounds_list = results[:,1]
 
         print('It took {} sec.'.format(time() - start))
