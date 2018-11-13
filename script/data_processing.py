@@ -41,21 +41,17 @@ def calc_pair_wise_properties(atomic_df, bond_indices, species, calc_type):
                 pair = abs(atom_i - atom_j)
             elif calc_type == 'mean':
                 pair = np.mean(np.concatenate([[atom_i], [atom_j]]), axis=0)
-
-            for column_index in range(len(atomic_df.columns)):
-                pair_mat[column_index, index_i, index_j] = pair[column_index]
+            pair_mat[:, index_i, index_j] = pair
         else:
-            for column_index in range(len(atomic_df.columns)):
-                pair_mat[column_index, index_i, index_j] = \
-                                    pair_mat[column_index, index_j, index_i]
+            pair_mat[:, index_i, index_j] = pair_mat[:, index_j, index_i]
 
     return pair_mat
 
 
 # Create descriptors.
-def calculate_descriptors(atomic_df, POSCAR_path, tol=1e-4, cutoff=10,
+def calculate_descriptors(atomic_df, POSCAR_path, tol=0, cutoff=10,
                         cov_radii_tol=0.65,
-                        connectivity="distance",
+                        connectivity="weight",
                         multiplication_type="element_wise",
                         isPeriodic=False, descriptor_type="mixtured",
                         max_matrix_power=10,
