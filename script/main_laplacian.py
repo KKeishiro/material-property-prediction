@@ -20,7 +20,7 @@ compounds_list_mp = os.path.join(dir_path,
 # ------------------------------------------------------------------------------
 
 atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
-atomic_df = atomic_df.drop(["Rps-d"], axis=1)
+atomic_df = atomic_df.drop(["kai(Allen)", "Rps-d"], axis=1)
 
 parser = argparse.ArgumentParser(description="compute laplacian-based descriptors")
 parser.add_argument("--property", required=True, help="property of a dataset")
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     with open(compounds_list_path) as f:
         lines = f.readlines()
         if args.isTest == True:
-            n_samples = 5
+            n_samples = 10
         else:
             n_samples = len(lines)
 
