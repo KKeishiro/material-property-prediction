@@ -15,8 +15,10 @@ descriptors_dir = os.path.join(dir_path,
 compounds_list_cohesive = os.path.join(dir_path,
                             "data/to_kanamori/cohesive/compounds_name")
 compounds_list_ltc = os.path.join(dir_path, "data/to_kanamori/ltc/kappa")
+# compounds_list_mp = os.path.join(dir_path,
+#                             "data/to_kanamori/melting_temp/mp_data")
 compounds_list_mp = os.path.join(dir_path,
-                            "data/to_kanamori/melting_temp/mp_data")
+                            "data/to_kanamori/melting_temp/mp_data_no_simple")
 # ------------------------------------------------------------------------------
 
 atomic_df = pd.read_csv(dir_path + "/data/atomic_data_reduced.csv", index_col=0)
@@ -53,8 +55,10 @@ if __name__ == "__main__":
         compounds_list_path = compounds_list_cohesive
     elif args.property == "ltc":
         compounds_list_path = compounds_list_ltc
+        atomic_df = atomic_df.drop(["IE2", "Rps-s"], axis=1)
     elif args.property == "mp":
         compounds_list_path = compounds_list_mp
+        atomic_df = atomic_df.drop(["IE2", "Rps-s"], axis=1)
     else:
         assert False, 'please choose a valid property name'
 
