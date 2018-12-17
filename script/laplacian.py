@@ -19,7 +19,7 @@ def set_structure_from_poscar_file(POSCAR_path):
     return structure
 
 
-# Compute normalized Laplacian matrix L.
+# Compute adjacency matrix A.
 def get_adj_matrix(structure, tol=0, cutoff=10):
     n_atoms = len(structure)
     adj_matrix_no_weight = np.zeros((n_atoms, n_atoms))
@@ -53,28 +53,30 @@ def get_adj_matrix(structure, tol=0, cutoff=10):
     return adj_matrix_no_weight, adj_matrix_multi_edge, adj_matrix_sol_angle
 
 
-# calculate normalized Laplacian from adjacency matrix
-def get_norm_laplacian(adj_matrix):
+# calculate Laplacian matrix from adjacency matrix
+def get_laplacian(adj_matrix, structure, potential=False):
     # compute degree matrix
     deg_matrix = np.diag(np.sum(adj_matrix, axis=1))
     # standard Laplacian
     laplacian = deg_matrix - adj_matrix
-    # normalized Laplacian
-    T = deg_matrix**(-0.5)
-    T[T == np.inf] = 0
-    norm_laplacian = np.dot(T, np.dot(laplacian, T))
+    # generalized laplacian (with potential)
+    if potential == True:
+        distance_matrix = structure.distance_matrix
+        reciprocal_distance_matrix = distance_matrix ** -1
+        reciprocal_distance_matrix[reciprocal_distance_matrix == np.inf] = 0
+        potential_matrix = np.diag(np.sum(reciprocal_distance_matrix, axis=1))
+        laplacian = laplacian - potential_matrix
 
     return laplacian
 
 
-def compute_descriptors_from_laplacian(norm_laplacian):
+def compute_descriptors_from_laplacian(laplacian):
     # compute eigenvalues and eigenvectors
-    w, v = np.linalg.eigh(norm_laplacian)
+    w, v = np.linalg.eigh(laplacian)
     # It is sure that the nontrivial smallest eigenvalue index is in the second
     # since all graphs are connected graph.
     nontrivial_smallest_eigenvalue_index = np.argsort(w)[1]
     alg_connectivity = w[nontrivial_smallest_eigenvalue_index]
-    # std_fiedler_vector = np.std(v[:, nontrivial_smallest_eigenvalue_index])
 
     return alg_connectivity, np.mean(w), np.std(w)
 
@@ -101,14 +103,14 @@ def calc_laplacian_descriptors(atomic_df, POSCAR_path, tol=0, cutoff=10):
     all_adj_matrix_list = adj_matrix_list + \
                         adj_matrix_atomic_weighted.tolist() + \
                         adj_matrix_atomic_multi_edge.tolist()
-    norm_laplacian_list = [get_norm_laplacian(np.array(x))
+    laplacian_list = [get_laplacian(np.array(x), structure, potential=True)
                             for x in all_adj_matrix_list]
-    descriptors = np.array([compute_descriptors_from_laplacian(norm_laplacian)
-                            for norm_laplacian in norm_laplacian_list])
-    # Even if a graph is weighted, the Firdler vector is the same with
+    descriptors = np.array([compute_descriptors_from_laplacian(laplacian)
+                            for laplacian in laplacian_list])
+    # Even if a graph is weighted, the Fiedler vector is the same with
     # one without weight. Therefore we calculate the std of the Fiedler vector
     # only once.
-    w, v = np.linalg.eigh(norm_laplacian_list[0])
+    w, v = np.linalg.eigh(laplacian_list[0])
     nontrivial_smallest_eigenvalue_index = np.argsort(w)[1]
     std_fiedler_vector = np.std(v[:, nontrivial_smallest_eigenvalue_index])
     descriptors = np.append(descriptors, std_fiedler_vector)
