@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import argparse
-from data_processing import compute_ave_descriptors, compute_std_descriptors
+from utils import compute_ave_descriptors, compute_std_descriptors
 
 # Setting path------------------------------------------------------------------
 dir_path = os.getcwd()

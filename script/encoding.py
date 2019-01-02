@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import argparse
 from getdata_from_poscar import DataConstruction
-from data_processing import composition_encoding
+from utils import composition_encoding
 
 # Setting path------------------------------------------------------------------
 dir_path = os.getcwd()
