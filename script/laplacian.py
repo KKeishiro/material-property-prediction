@@ -12,6 +12,14 @@ import warnings
 warnings.filterwarnings("ignore") # ignore RuntimeWarning (division by zero)
 
 
+valence_dict = {'Li':1, 'Na':1, 'K':1, 'Rb':1, 'Cs':1,
+                'Be':2, 'Mg':2, 'Ca':2, 'Sr':2, 'Ba':2, 'Zn':2, 'Cd':2, 'Hg':2,
+                'Al':3, 'Ga':3, 'In':3, 'Sc':3, 'Y':3, 'La':3,
+                'F':-1, 'Cl':-1, 'Br':-1, 'I':-1,
+                'O':-2, 'S':-2, 'Se':-2, 'Te':-2,
+                'N':-3, 'P':-3, 'As':-3, 'Sb':-3}
+
+
 def set_structure_from_poscar_file(POSCAR_path):
     poscar = Poscar.from_file(POSCAR_path, check_for_POTCAR=False,
                             read_velocities=False)
@@ -61,14 +69,22 @@ def get_laplacian(adj_matrix, structure, potential=True):
     laplacian = deg_matrix - adj_matrix
     # generalized laplacian (with potential)
     if potential == True:
+        species = structure.species
+        coulomb_matrix = np.zeros((len(species), len(species)))
+        for i in range(len(species)):
+            for j in range(len(species)):
+                if i < j:
+                    coulomb_matrix[i, j] = valence_dict[str(species[i])] * \
+                                            valence_dict[str(species[j])]
+                else:
+                    coulomb_matrix[i, j] = coulomb_matrix[j, i]
         distance_matrix = structure.distance_matrix
         reciprocal_distance_matrix = distance_matrix ** -1
         reciprocal_distance_matrix[reciprocal_distance_matrix == np.inf] = 0
+        coulomb_matrix = coulomb_matrix * reciprocal_distance_matrix
+        potential_matrix = np.diag(np.sum(coulomb_matrix, axis=1))
         # potential_matrix = np.diag(np.sum(reciprocal_distance_matrix, axis=1))
-        # laplacian = laplacian - potential_matrix
-        for i in range(len(reciprocal_distance_matrix)):
-            reciprocal_distance_matrix[i,i] = 1
-        laplacian = laplacian * reciprocal_distance_matrix
+        laplacian = laplacian + potential_matrix
 
     return laplacian
 
