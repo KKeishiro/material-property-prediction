@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from getdata_from_poscar import DataConstruction
+from legacy.getdata_from_poscar import DataConstruction
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 
 

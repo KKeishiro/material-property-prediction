@@ -65,7 +65,7 @@ if __name__ == "__main__":
             if args.property == "cohesive":
                 compound_dir = lines[index].strip()
                 POSCAR_path = os.path.join(descriptors_dir, compound_dir, "POSCAR")
-            elif args.property == "ltc" or property == "mp":
+            elif args.property == "ltc" or args.property == "mp":
                 line = lines[index].strip().split()
                 compound_dir = line[0]
                 POSCAR_path = os.path.join(dir_path, compound_dir, "POSCAR")
