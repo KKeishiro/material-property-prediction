@@ -28,7 +28,10 @@ parser = argparse.ArgumentParser(description="compute laplacian-based descriptor
 parser.add_argument("--property", required=True, help="property of a dataset")
 parser.add_argument("--save_path", required=True, help="path to save data")
 parser.add_argument("--isTest", action="store_true", help="whether to test or not")
-parser.add_argument("--potential", action="store_true", help="potential is taken into account")
+parser.add_argument("--potential", action="store_true",
+                    help="potential is taken into account")
+parser.add_argument("--oxi_state_guesses", action="store_true",
+                    help="oxi_state will be guessed")
 args = parser.parse_args()
 
 load_dir = os.path.join('data/descriptors', args.property)
@@ -77,8 +80,9 @@ if __name__ == "__main__":
                                 adj_matrix_sol_angle[index]]
             # compute descriptors
             descriptor = calc_laplacian_descriptors(atomic_df, POSCAR_path,
-                                                    adj_matrix_list,
-                                                    potential=args.potential)
+                                    adj_matrix_list,
+                                    potential=args.potential,
+                                    oxi_state_guesses=args.oxi_state_guesses)
             descriptors.append(descriptor)
             compounds_list.append(compound_dir)
 
