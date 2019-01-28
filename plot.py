@@ -123,16 +123,16 @@ def plot(property='cohesive', combine=False):
     ax.set_ylim(ylim)
     if property == 'cohesive':
         ax.plot([-0.5,3], [0.243,0.243], color='k')
-        ax.text(x=0.5, y=0.282,s='Without graph features (0.243)')
-        ax.annotate('', xy=(1,0.245), xytext=(1,0.275), arrowprops=dict(color='k'))
+        ax.text(x=0.7, y=0.282,s='Without graph features (0.243)')
+        ax.annotate('', xy=(1.2,0.245), xytext=(1.2,0.275), arrowprops=dict(color='k'))
     elif property == 'ltc':
         ax.plot([-0.5,3], [0.17,0.17], color='k')
         ax.text(x=0.7, y=0.21,s='Without graph features (0.17)')
         ax.annotate('', xy=(1.2,0.175), xytext=(1.2,0.205), arrowprops=dict(color='k'))
     else:
         ax.plot([-0.5,3], [300,300], color='k')
-        ax.text(x=0.5, y=355,s='Without graph features (300)')
-        ax.annotate('', xy=(1,305), xytext=(1,340), arrowprops=dict(color='k'))
+        ax.text(x=0.7, y=355,s='Without graph features (300)')
+        ax.annotate('', xy=(1.2,305), xytext=(1.2,340), arrowprops=dict(color='k'))
     plt.show()
 
 # plot graph laplacian
@@ -167,7 +167,7 @@ def plot_laplacian(property='cohesive'):
     if property == 'cohesive':
         ax.plot([-0.5,3], [0.243,0.243], color='k')
         ax.text(x=0.25, y=0.282,s='Without graph features (0.243)')
-        ax.annotate('', xy=(0,5,0.245), xytext=(0.5,0.275), arrowprops=dict(color='k'))
+        ax.annotate('', xy=(0.5,0.245), xytext=(0.5,0.275), arrowprops=dict(color='k'))
     elif property == 'ltc':
         ax.plot([-0.5,3], [0.17,0.17], color='k')
         ax.text(x=0.25, y=0.21,s='Without graph features (0.17)')
