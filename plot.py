@@ -166,16 +166,26 @@ def plot_laplacian(property='cohesive'):
     ax.set_ylim(ylim)
     if property == 'cohesive':
         ax.plot([-0.5,3], [0.243,0.243], color='k')
-        ax.text(x=0.25, y=0.282,s='Without graph features (0.243)')
+        ax.plot([-0.5,3], [0.073,0.073], color='r')
+        ax.text(x=0.2, y=0.282,s='Without graph features (0.243)')
+        ax.text(x=0.17, y=0.12,s='Best model by std features (0.073)', color='r')
         ax.annotate('', xy=(0.5,0.245), xytext=(0.5,0.275), arrowprops=dict(color='k'))
+        ax.annotate('', xy=(0.5,0.08), xytext=(0.5,0.11), arrowprops=dict(color='r'))
     elif property == 'ltc':
         ax.plot([-0.5,3], [0.17,0.17], color='k')
-        ax.text(x=0.25, y=0.21,s='Without graph features (0.17)')
+        ax.plot([-0.5,3], [0.13,0.13], color='r')
+        ax.text(x=0.2, y=0.21,s='Without graph features (0.17)')
+        ax.text(x=0.17, y=0.155,s='Best model by std features (0.13)', color='r')
         ax.annotate('', xy=(0.5,0.175), xytext=(0.5,0.205), arrowprops=dict(color='k'))
+        ax.annotate('', xy=(0.5,0.13), xytext=(0.5,0.15), arrowprops=dict(color='r'))
     else:
         ax.plot([-0.5,3], [300,300], color='k')
-        ax.text(x=0.25, y=355,s='Without graph features (300)')
-        ax.annotate('', xy=(0.5,305), xytext=(0.5,340), arrowprops=dict(color='k'))
+        ax.plot([-0.5,3], [270,270], color='r')
+        ax.text(x=-0.1, y=355,s='Without graph features (300)')
+        ax.text(x=0.3, y=320,s='Best model by multi_edge mean features (270)',
+                color='r')
+        ax.annotate('', xy=(0.15,305), xytext=(0.15,340), arrowprops=dict(color='k'))
+        ax.annotate('', xy=(0.6,275), xytext=(0.6,315), arrowprops=dict(color='r'))
     plt.show()
 
 
