@@ -12,14 +12,12 @@ import warnings
 warnings.filterwarnings("ignore") # ignore RuntimeWarning (division by zero)
 
 
-valence_dict = {'H':1,'Li':1,'Na':1,'K':1,'Rb':1,'Cs':1,'Ag':1,
-                'Be':2,'Mg':2,'Ca':2,'Sr':2,'Ba':2,'Zn':2,'Cd':2,'Hg':2,'Pb':2,
+valence_dict = {'H':1,'Li':1,'Na':1,'K':1,'Rb':1,'Cs':1,
+                'Be':2,'Mg':2,'Ca':2,'Sr':2,'Ba':2,'Zn':2,'Cd':2,'Hg':2,
                 'B':3,'Al':3,'Ga':3,'In':3,'Sc':3,'Y':3,'La':3,
-                'Si':4,'Pd':4,
                 'F':-1,'Cl':-1,'Br':-1,'I':-1,
                 'O':-2,'S':-2,'Se':-2,'Te':-2,
-                'N':-3,'P':-3,'As':-3,'Sb':-3,
-                'C':-4}
+                'N':-3,'P':-3,'As':-3,'Sb':-3}
 
 
 def set_structure_from_poscar_file(POSCAR_path):
@@ -83,8 +81,8 @@ def calc_potential_mat(adj_matrix, structure, oxi_state_guesses=False):
                                                 all_oxi_states=True)
                         assert oxi_states != [], 'oxi_state could not be guessed'
                         oxi_state = oxi_states[0]
-                        coulomb_matrix[i, j] = oxi_state[str(species[i])] * \
-                                                oxi_state[str(species[j])]
+                    coulomb_matrix[i, j] = oxi_state[str(species[i])] * \
+                                            oxi_state[str(species[j])]
             else:
                 coulomb_matrix[i, j] = coulomb_matrix[j, i]
     distance_matrix = structure.distance_matrix
@@ -114,10 +112,6 @@ def get_laplacian(adj_matrix, structure, potential=None):
 def compute_descriptors_from_laplacian(laplacian):
     # compute eigenvalues and eigenvectors
     w, v = np.linalg.eigh(laplacian)
-    # It is sure that the nontrivial smallest eigenvalue index is in the second
-    # since all graphs are connected graph.
-    # nontrivial_smallest_eigenvalue_index = np.argsort(w)[1]
-    # alg_connectivity = w[nontrivial_smallest_eigenvalue_index]
 
     return np.mean(w), np.std(w)
 
@@ -163,19 +157,5 @@ def calc_laplacian_descriptors(atomic_df, POSCAR_path, adj_matrix_list=None,
                                     for x in all_adj_matrix_list]
     descriptors = np.array([compute_descriptors_from_laplacian(laplacian)
                             for laplacian in laplacian_list])
-    # Even if a graph is weighted, the Fiedler vector is the same with
-    # one without weight. Therefore we calculate the std of the Fiedler vector
-    # only once.
-    # w, v = np.linalg.eigh(laplacian_list[0])
-    # nontrivial_smallest_eigenvalue_index = np.argsort(w)[0]
-    # mean_fiedler_vector = np.mean(v[:, nontrivial_smallest_eigenvalue_index])
-    # std_fiedler_vector = np.std(v[:, nontrivial_smallest_eigenvalue_index])
-    # nontrivial_smallest_eigenvalue_index2 = np.argsort(w)[1]
-    # mean_fiedler_vector2 = np.mean(v[:, nontrivial_smallest_eigenvalue_index2])
-    # std_fiedler_vector2 = np.std(v[:, nontrivial_smallest_eigenvalue_index2])
-    # descriptors = np.append(descriptors, mean_fiedler_vector)
-    # descriptors = np.append(descriptors, std_fiedler_vector)
-    # descriptors = np.append(descriptors, mean_fiedler_vector2)
-    # descriptors = np.append(descriptors, std_fiedler_vector2)
 
     return descriptors.flatten()
