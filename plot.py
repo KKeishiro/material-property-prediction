@@ -12,60 +12,6 @@ def get_laplacian(adj_matrix):
     return laplacian
 
 
-# graph_A = np.array([[0,1,1,1,0,0,0,0],
-#                     [1,0,1,1,0,0,0,0],
-#                     [1,1,0,1,1,0,0,0],
-#                     [1,1,1,0,0,1,0,0],
-#                     [0,0,1,0,0,1,1,1],
-#                     [0,0,0,1,1,0,1,1],
-#                     [0,0,0,0,1,1,0,1],
-#                     [0,0,0,0,1,1,1,0]])
-#
-# graph_B = np.array([[0,1,1,1,0,0,0,0],
-#                     [1,0,1,1,0,0,0,0],
-#                     [1,1,0,1,0,0,0,0],
-#                     [1,1,1,0,0,1,0,0],
-#                     [0,0,0,0,0,1,1,1],
-#                     [0,0,0,1,1,0,1,1],
-#                     [0,0,0,0,1,1,0,1],
-#                     [0,0,0,0,1,1,1,0]])
-#
-# graph_C = np.array([[0,1,1,1,0,0,0,0],
-#                     [1,0,1,1,0,0,0,0],
-#                     [1,1,0,1,0,0,0,0],
-#                     [1,1,1,0,0,0,0,0],
-#                     [0,0,0,0,0,1,1,1],
-#                     [0,0,0,0,1,0,1,1],
-#                     [0,0,0,0,1,1,0,1],
-#                     [0,0,0,0,1,1,1,0]])
-#
-# laplacian_A = get_laplacian(graph_A)
-# laplacian_B = get_laplacian(graph_B)
-# laplacian_C = get_laplacian(graph_C)
-#
-# w_A, v_A = np.linalg.eigh(laplacian_A)
-# w_B, v_B = np.linalg.eigh(laplacian_B)
-# w_C, v_C = np.linalg.eigh(laplacian_C)
-#
-# alg_connec_A = w_A[np.argsort(w_A)[1]]
-# alg_connec_B = w_B[np.argsort(w_B)[1]]
-# alg_connec_C = w_C[np.argsort(w_C)[1]]
-#
-# alg_connec_list = [alg_connec_A, alg_connec_B, alg_connec_C]
-# graph_id_list = ['A', 'B', 'C']
-#
-# plt.scatter([0,1,2], alg_connec_list)
-# plt.xticks([0,1,2], graph_id_list)
-# plt.xlabel('Graph_id')
-# plt.ylabel('Algebraic connectivity')
-# plt.show()
-#
-# plt.scatter(np.arange(1,9), v_A[:, np.argsort(w_A)[1]])
-# plt.title('Fiedler vector')
-# plt.xlabel('Node_id')
-# plt.show()
-
-
 cohesive_res = {'simple': [0.200,0.126,0.143],
                 'multi_edge': [0.193,0.144,0.142],
                 'sol_angle': [0.194,0.110,0.123],
@@ -189,6 +135,20 @@ def plot_laplacian(property='cohesive'):
     plt.show()
 
 
+features = np.load('data/feature_importance/feature_name.npy')
+perm_importance = np.load('data/feature_importance/perm_importance.npy')
+std_perm_importance = np.load('data/feature_importance/perm_importance_std.npy')
+def plot_perm_importance(perm_importance, std_perm_importance):
+    ranking = np.argsort(-perm_importance)
+    fig, ax = plt.subplots(figsize=(9, 11))
+    sns.barplot(x=perm_importance[ranking[:30]], y=features[ranking[:30]],
+                orient='h')
+    ax.set_title("Permutation importance (top30)")
+    ax.set_xlabel("Increase in RMSE (eV / atom)")
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--property", required=True, help="property")
@@ -196,8 +156,13 @@ if __name__=="__main__":
                         help="whether plot laplacian result")
     parser.add_argument("--combined", action="store_true",
                         help="plot the result for combined features")
+    parser.add_argument("--perm_importance", action='store_true',
+                        help="plot permutation importance")
     args = parser.parse_args()
-    if args.laplacian:
-        plot_laplacian(args.property)
-    else:
-        plot(args.property, args.combined)
+    # if args.laplacian:
+    #     plot_laplacian(args.property)
+    # else:
+    #     plot(args.property, args.combined)
+
+    if args.perm_importance:
+        plot_perm_importance(perm_importance, std_perm_importance)
