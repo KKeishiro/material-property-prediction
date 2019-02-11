@@ -12,60 +12,6 @@ def get_laplacian(adj_matrix):
     return laplacian
 
 
-# graph_A = np.array([[0,1,1,1,0,0,0,0],
-#                     [1,0,1,1,0,0,0,0],
-#                     [1,1,0,1,1,0,0,0],
-#                     [1,1,1,0,0,1,0,0],
-#                     [0,0,1,0,0,1,1,1],
-#                     [0,0,0,1,1,0,1,1],
-#                     [0,0,0,0,1,1,0,1],
-#                     [0,0,0,0,1,1,1,0]])
-#
-# graph_B = np.array([[0,1,1,1,0,0,0,0],
-#                     [1,0,1,1,0,0,0,0],
-#                     [1,1,0,1,0,0,0,0],
-#                     [1,1,1,0,0,1,0,0],
-#                     [0,0,0,0,0,1,1,1],
-#                     [0,0,0,1,1,0,1,1],
-#                     [0,0,0,0,1,1,0,1],
-#                     [0,0,0,0,1,1,1,0]])
-#
-# graph_C = np.array([[0,1,1,1,0,0,0,0],
-#                     [1,0,1,1,0,0,0,0],
-#                     [1,1,0,1,0,0,0,0],
-#                     [1,1,1,0,0,0,0,0],
-#                     [0,0,0,0,0,1,1,1],
-#                     [0,0,0,0,1,0,1,1],
-#                     [0,0,0,0,1,1,0,1],
-#                     [0,0,0,0,1,1,1,0]])
-#
-# laplacian_A = get_laplacian(graph_A)
-# laplacian_B = get_laplacian(graph_B)
-# laplacian_C = get_laplacian(graph_C)
-#
-# w_A, v_A = np.linalg.eigh(laplacian_A)
-# w_B, v_B = np.linalg.eigh(laplacian_B)
-# w_C, v_C = np.linalg.eigh(laplacian_C)
-#
-# alg_connec_A = w_A[np.argsort(w_A)[1]]
-# alg_connec_B = w_B[np.argsort(w_B)[1]]
-# alg_connec_C = w_C[np.argsort(w_C)[1]]
-#
-# alg_connec_list = [alg_connec_A, alg_connec_B, alg_connec_C]
-# graph_id_list = ['A', 'B', 'C']
-#
-# plt.scatter([0,1,2], alg_connec_list)
-# plt.xticks([0,1,2], graph_id_list)
-# plt.xlabel('Graph_id')
-# plt.ylabel('Algebraic connectivity')
-# plt.show()
-#
-# plt.scatter(np.arange(1,9), v_A[:, np.argsort(w_A)[1]])
-# plt.title('Fiedler vector')
-# plt.xlabel('Node_id')
-# plt.show()
-
-
 cohesive_res = {'simple': [0.200,0.126,0.143],
                 'multi_edge': [0.193,0.144,0.142],
                 'sol_angle': [0.194,0.110,0.123],
