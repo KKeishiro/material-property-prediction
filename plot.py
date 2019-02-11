@@ -136,15 +136,18 @@ def plot_laplacian(property='cohesive'):
 
 
 features = np.load('data/feature_importance/feature_name.npy')
+features[np.where(features == 'E-vapor_element_ave')[0][0]] = 'BP_element_ave'
+features[np.where(features == 'm_element_std')[0][0]] = 'Z_element_std'
 perm_importance = np.load('data/feature_importance/perm_importance.npy')
 std_perm_importance = np.load('data/feature_importance/perm_importance_std.npy')
 def plot_perm_importance(perm_importance, std_perm_importance):
     ranking = np.argsort(-perm_importance)
     fig, ax = plt.subplots(figsize=(9, 11))
-    sns.barplot(x=perm_importance[ranking[:30]], y=features[ranking[:30]],
+    sns.barplot(x=perm_importance[ranking[-30:]], y=features[ranking[-30:]],
                 orient='h')
-    ax.set_title("Permutation importance (top30)")
+    ax.set_title("Permutation importance (bottom30)")
     ax.set_xlabel("Increase in RMSE (eV / atom)")
+    ax.set_xlim(0, 0.1)
     plt.tight_layout()
     plt.show()
 
