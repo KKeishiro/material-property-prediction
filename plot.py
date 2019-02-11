@@ -135,6 +135,20 @@ def plot_laplacian(property='cohesive'):
     plt.show()
 
 
+features = np.load('data/feature_importance/feature_name.npy')
+perm_importance = np.load('data/feature_importance/perm_importance.npy')
+std_perm_importance = np.load('data/feature_importance/perm_importance_std.npy')
+def plot_perm_importance(perm_importance, std_perm_importance):
+    ranking = np.argsort(-perm_importance)
+    fig, ax = plt.subplots(figsize=(9, 11))
+    sns.barplot(x=perm_importance[ranking[:30]], y=features[ranking[:30]],
+                orient='h')
+    ax.set_title("Permutation importance (top30)")
+    ax.set_xlabel("Increase in RMSE (eV / atom)")
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--property", required=True, help="property")
@@ -142,8 +156,13 @@ if __name__=="__main__":
                         help="whether plot laplacian result")
     parser.add_argument("--combined", action="store_true",
                         help="plot the result for combined features")
+    parser.add_argument("--perm_importance", action='store_true',
+                        help="plot permutation importance")
     args = parser.parse_args()
-    if args.laplacian:
-        plot_laplacian(args.property)
-    else:
-        plot(args.property, args.combined)
+    # if args.laplacian:
+    #     plot_laplacian(args.property)
+    # else:
+    #     plot(args.property, args.combined)
+
+    if args.perm_importance:
+        plot_perm_importance(perm_importance, std_perm_importance)
