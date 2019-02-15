@@ -142,12 +142,50 @@ perm_importance = np.load('data/feature_importance/perm_importance.npy')
 std_perm_importance = np.load('data/feature_importance/perm_importance_std.npy')
 def plot_perm_importance(perm_importance, std_perm_importance):
     ranking = np.argsort(-perm_importance)
-    fig, ax = plt.subplots(figsize=(9, 11))
-    sns.barplot(x=perm_importance[ranking[-30:]], y=features[ranking[-30:]],
-                orient='h')
-    ax.set_title("Permutation importance (bottom30)")
-    ax.set_xlabel("Increase in RMSE (eV / atom)")
-    ax.set_xlim(0, 0.1)
+    top30_feature_name = features[ranking[:30]]
+    element_features_index = [i for i, name in enumerate(top30_feature_name)
+                                if 'eigval' not in name]
+    graph_features_index = [i for i, name in enumerate(top30_feature_name)
+                                if 'eigval' in name]
+    simple_index = [i for i, name in enumerate(top30_feature_name)
+                                if 'simple' in name]
+    multi_edge_index = [i for i, name in enumerate(top30_feature_name)
+                                if 'multi_edge' in name]
+    sol_angle_index = [i for i, name in enumerate(top30_feature_name)
+                                if 'sol_angle' in name]
+    fig, ax = plt.subplots(figsize=(11, 7))
+    # sns.barplot(x=perm_importance[ranking[:30]], y=features[ranking[:30]],
+    #             orient='h')
+    # plt.bar(height=perm_importance[ranking[:30]][element_features_index],
+    #         x=element_features_index,
+    #         color='lightsteelblue',
+    #         label='Element features')
+    # plt.bar(height=perm_importance[ranking[:30]][graph_features_index],
+    #         x=graph_features_index,
+    #         color='blue',
+    #         label='Graph features')
+    # plt.bar(height=perm_importance[ranking[:30]][simple_index],
+    #         x=simple_index,
+    #         color='royalblue',
+    #         label='No weight')
+    # plt.bar(height=perm_importance[ranking[:30]][multi_edge_index],
+    #         x=multi_edge_index,
+    #         color='green',
+    #         label='Coordination number weighted')
+    # plt.bar(height=perm_importance[ranking[:30]][sol_angle_index],
+    #         x=sol_angle_index,
+    #         color='orangered',
+    #         label='Solid angle weighted')
+    patches, texts, autotexts = plt.pie([20, 20, 60],
+            colors=['royalblue', 'green', 'orangered'],
+            counterclock=False, startangle=90, autopct="%.0f%%",
+            textprops={'color': "white", 'weight': "bold"})
+    plt.setp(autotexts, size='xx-large')
+    # ax.set_title("Permutation importance (top30)")
+    # ax.set_xlabel("Increase in RMSE (eV / atom)")
+    plt.xticks([], [])
+    # plt.legend(fontsize='x-large')
+    # ax.set_xlim(0, 0.1)
     plt.tight_layout()
     plt.show()
 
